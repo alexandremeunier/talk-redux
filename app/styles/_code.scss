@@ -110,5 +110,19 @@
       color: #5F87AF;
     }
   }
+
+  .language-ruby {
+    .token {
+      &.symbol {
+        color: #FF5F00;
+      }
+      &.keyword {
+      color: #008700;
+      }
+    }
+  }
+  .language-yaml {
+    color: #FF5F5F;
+  }
 }
 

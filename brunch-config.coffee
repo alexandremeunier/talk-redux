@@ -13,5 +13,5 @@ module.exports = config:
       pattern: /\.js$/
   server:
       run: yes
-      port: 5010
+      port: 5011
 
