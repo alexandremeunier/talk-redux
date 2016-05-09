@@ -1,41 +1,21 @@
 .reveal {
-  // A square block of color, to explain that we found a color per hero
-  .marvel-color {
-    display: inline-block;
-    height: 80px;
-    width: 80px;
-  }
-
-  // List of all logos of tools used in the demo
-  .marvel-building-blocks--logos {
+  .logos {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column nowrap;
   }
-  .marvel-building-blocks--logo {
-    flex: 1 0 33%;
-    align-self: center;
-    img {
-      max-height: 250px;
-    }
+  .logos-link {
+    border: none;
+    flex: 1;
+    text-align: center;
+    display: inline-block;
+    padding: 15px;
   }
-
-  // Instantsearch
-  .marvel-instantsearch--title {
-    margin: 0;
-  }
-  .marvel-instantsearch--logo {
-    width: 100%;
+  .logos-logo {
+    height: 150px;
+    max-height: 250px;
   }
 
-  // Cloudinary
-  .marvel-cloudinary--image {
-    position: relative;
-    &:after {
-      font-family: 'Code';
-      position: absolute;
-      bottom: 15px;
-      right: 25px;
-      content: attr(data-text);
-    }
+  .intro-author {
+    margin-top: 3rem;
   }
 }

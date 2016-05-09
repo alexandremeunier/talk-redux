@@ -117,7 +117,13 @@
         color: #FF5F00;
       }
       &.keyword {
-      color: #008700;
+        color: #008700;
+      }
+      &.class-name {
+        color: #FFAF00;
+      }
+      &.function {
+        color: #00AF5F;
       }
     }
   }

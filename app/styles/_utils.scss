@@ -33,9 +33,17 @@
     white-space: pre;
   }
 
+  // Font-size
+  .u-size-big {
+    font-size: 2rem;
+  }
+
   // Remove bullets from list
   .u-list-no-bullets {
     list-style: none;
     margin-left: 0;
+  }
+  .u-list-large-space {
+    line-height: 3rem;
   }
 }
