@@ -1,4 +1,4 @@
-let Marvel = {
+export default {
   init() {
     // Full list of configuration options available here:
     // https://github.com/hakimel/reveal.js#configuration
@@ -16,14 +16,12 @@ let Marvel = {
           return !document.body.classList;
         }
       }, {
-        src: 'js/prism.js',
+        src: 'js/highlight.js',
         async: true,
-        callback: () => {
-          Prism.highlightAll();
-        }
-      }]
+        callback: function() { hljs.initHighlightingOnLoad(); }
+      },
+      // Speaker notes
+      { src: 'js/notes.js', async: true }]
     });
   }
 };
-
-export default Marvel;

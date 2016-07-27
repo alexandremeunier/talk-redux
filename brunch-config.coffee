@@ -11,6 +11,10 @@ module.exports = config:
       presets: ['es2015']
       ignore: []
       pattern: /\.js$/
+    jaded:
+      staticPatterns: /^app\/(.+)\.jade$/
+      jade:
+        pretty: no
   server:
       run: yes
       port: 5011

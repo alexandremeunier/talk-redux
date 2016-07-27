@@ -1,15 +1,15 @@
 {
-  "name": "talk-jekyll-algolia",
+  "name": "talk-redux",
   "version": "0.0.1",
-  "description": "How does the Algolia Jekyll plugin work?",
-  "author": "Tim \"pixelastic\" Carry",
+  "description": Redux – Why and when?,
+  "author": "Alexandre Meunier",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:pixelastic/talk-jekyll-algolia.git"
+    "url": "ssh://git@github.com:alexandremeunier/talk-redux.git"
   },
   "bugs": {
-    "url": "https://github.com/pixelastic/talk-jekyll-algolia/issues"
+    "url": "https://github.com/alexandremeunier/talk-redux/issues"
   },
   "scripts": {
     "build": "./scripts/build",
@@ -30,9 +30,10 @@
     "eslint-config-algolia": "^4.5.0",
     "eslint-plugin-algolia": "^1.5.0",
     "eslint-plugin-react": "^3.11.3",
-    "sass-brunch": "2.0.0",
+    "jaded-brunch": "^2.3.0",
     "onchange": "2.0.0",
-    "parallelshell": "2.0.0"
+    "parallelshell": "2.0.0",
+    "sass-brunch": "2.0.0"
   },
   "dependencies": {}
 }

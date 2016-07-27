@@ -1,4 +1,40 @@
 .reveal {
+  line-height: 3em !important;
+  p, ul li {
+    line-height: 2em;
+  }
+
+  cite {
+    line-height: 1em;
+  }
+
+  pre code {
+    margin-left: 1em;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    overflow-y: hidden;
+  }
+
+  h4 {
+    font-family: Title;
+    font-size: 4rem;
+    // font-weight: bold;
+  }
+
+  h5 {
+    font-family: Title;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  sectionx {
+    display: none;
+  }
+
+  .progress {
+    height: 5px;
+  }
+
   .logos {
     display: flex;
     flex-flow: column nowrap;
@@ -17,5 +53,61 @@
 
   .intro-author {
     margin-top: 3rem;
+  }
+
+  .slides {
+    text-align: left;
+  }
+
+  strong {
+    font-family: Title;
+    font-weight: bold !important;
+
+    background-color: #192c4d;
+    padding: 1px 6px 1px 8px;
+    color: white !important;
+    border-radius: 3px
+  }
+
+  code {
+    background-color: #192c4d;
+    padding: 1px 6px 1px 8px;
+    border-radius: 3px
+  }
+
+  // Alexm
+  blockquote {
+    font-size: 3rem;
+    padding: 1rem;
+    width: 100%;
+    font-family: Title;
+
+    p {
+      margin-bottom: 2rem;
+      line-height: 3rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &:after {
+      content: "– " attr(cite);
+      position: absolute;
+      font-size: 1.2rem;
+      font-style: normal;
+      text-align: right;
+      width: 100%;
+      right: 10px;
+      bottom: -3rem;
+    }
+
+    &.has-highlight {
+      color: transparentize($white, 0.5);
+
+      strong {
+        color: $white
+      }
+    }
   }
 }

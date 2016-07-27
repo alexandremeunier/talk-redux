@@ -1,0 +1,405 @@
+mixin escape()
+  - var oldBuf = buf;
+  - buf = [];
+  block
+  - buf  = oldBuf.concat(buf.map(jade.escape));
+
+mixin code(language)
+  -
+    if (language === undefined) {
+      language = 'javascript'
+    }
+  pre
+    code(class = language)
+      +escape()
+        block
+
+mixin notes
+  aside.notes
+    ul
+      block
+
+doctype html
+html
+  head
+    title Redux – Why and when?
+    meta(charset="utf-8")
+    meta(name="description" content="Redux – Why and when? @ Algolia")
+    meta(name="author" content="Alexandre Meunier")
+    meta(name="apple-mobile-web-app-capable" content="yes")
+    meta(name="apple-mobile-web-app-status-bar-style" content="black-translucent")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+    link(rel="stylesheet" type="text/css" href="main.css")
+    link(rel="shortcut icon" href="./favicon.ico")
+
+  body
+    a.demo-link(target="_blank" href="#")
+
+    .reveal
+      .slides
+
+        section
+          section
+            h1(style="text-align: left; margin-bottom: 0.5em") Redux
+            h4 Why and when?
+            br
+            p(style="text-align: left; vertical-align: middle;")
+              img(src="https://en.gravatar.com/userimage/42384389/8cc589eb1e04703fef15259ec63099a9.jpeg" style="vertical-align: middle; border-radius: 50%; width: 2em; margin-right: 1em; margin-top: -0.2em")
+              span Alexandre Meunier (alexandre.meunier@algolia.com)
+
+        section
+          h4(style="margin-bottom: 1em;")
+            span Hello, I'm Alex
+            img(src="https://en.gravatar.com/userimage/42384389/8cc589eb1e04703fef15259ec63099a9.jpeg" style="vertical-align: middle; border-radius: 50%; width: 1em; margin-left: 0.5em; margin-top: -0.2em")
+          h5
+            span I'm a software engineer at
+            img(src="img/algolia.png" style="vertical-align: middle; height: 1.5em; margin-left: 0.5em; margin-top: -0.2em")
+          h5
+            span I work on the <a href="https://algolia.com" target="_blank">algolia.com</a> website, mostly using Ruby and Javascript
+          h5
+            span I am on twitter: <a href="https://twitter.com/dephadepha" target="_blank">@dephadepha</a>
+
+          sectionx
+
+            h4 What's Flux?
+            br
+            blockquote.has-highlight(cite="https://facebook.github.io/flux/docs/overview.html#content")
+              p.
+                Flux is the <strong>application architecture</strong> that Facebook uses for building client-side web applications.
+
+              p It complements React's composable view components by utilizing a <strong>unidirectional data flow</strong>. It's more of a pattern rather than a formal framework [...]
+
+          sectionx
+            h4 What's Flux
+            h5 Remember MV*?
+            img(src="http://fluxxor.com/images/mvc-complex.png")
+            cite http://fluxxor.com/what-is-flux.html
+
+            +notes
+              li Angular?
+              li Who is updating which model?
+
+          sectionx
+            h4 What's Flux
+            h5 Remember MV*?
+            img(src="img/mvc-complex.jpeg")
+            cite https://medium.com/brigade-engineering/what-is-the-flux-application-architecture-b57ebca85b9e#.f96m63cxl
+
+
+
+          sectionx
+            h4 What's Flux
+            h5 Look how simple Flux is
+            br
+            img(src="img/flux-simple-f8-diagram-with-client-action-1300w.png")
+
+            cite https://facebook.github.io/flux/docs/overview.html#content
+
+            +notes
+              li One way data flow
+
+          sectionx
+            h4 What is Flux?
+            h5 Real life Flux
+            br
+            img(src="img/flux-complex.jpeg")
+
+          sectionx
+            h4 What is Flux?
+            h5 Key features
+            ul
+              li
+                strong Predictability, Predictability, Predictability
+              li Always synchronous – one action at a time
+              li Clear (inverted) control/ownership
+              li Separation of concerns
+
+            +notes
+              li No race conditions
+              li No one knows how to update the stores except the stores
+
+
+
+
+
+
+        section
+          h4 What is Redux?
+          blockquote(cite="https://github.com/reactjs/redux").
+            Redux is a predictable state container for JavaScript apps.
+
+          +notes
+            li You data lives outside your app
+            li Nothing to do with React
+
+        section
+          h4 What is Redux?
+
+          ul
+            li <strong>Evolved from Flux</strong>, influenced by Elm
+            li Created in 2015 by <strong><a href="https://twitter.com/dan_abramov" target="blank">@dan_abramov</a></strong> ...
+            li ... to demonstrate <strong>hot reloading with time travel</strong> at <a href="https://www.youtube.com/watch?v=xsSnOQynTHs" target="_blank">React Europe</a>
+            br
+            br
+            img(src="img/redux.svg" style="width: 90%")
+
+          +notes
+            li De facto way to manage state in React – a bit too much
+            li Great ecosystem
+            li Immmutable
+            li Single source of truth
+
+        section
+          h4 What does it look like?
+          h5 Reducers
+
+          +code.
+            function todosReducer(state = [], action) {
+              switch (action.type) {
+                case 'ADD_TODO':
+                  return state.concat(action.payload);
+                default:
+                  return state;
+              }
+            }
+
+            state.todos // => []
+
+            dispatch({
+              type: 'ADD_TODO',
+              payload: 'Buy milk'
+            });
+
+            state.todos // => ['Buy milk']
+
+          +notes
+            li Takes action and immutably transform state
+            li Maps to key on the app State
+
+
+        section
+          h4 What does it look like?
+          h5 Dumb components
+
+          +code.
+            export function TodoList({todos, addTodo}) {
+              return (
+                <div>
+                  <ul>
+                    {todos.map(todo => (
+                      <li>{todo}</li>
+                    ))}
+                    <li>
+                      <input type="text" ref="input">
+                      <button onClick={evt => addTodo(evt.target.value)}>
+                        Add
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              );
+            }
+
+          +notes
+            li Goal: as dumb as possible
+            li Completely decorrelated from business logic
+
+        section
+          h4 What does it look like?
+          h5 Smart containers
+
+          +code.
+            import {connect} from 'react-redux';
+
+            // Inject a subset of the state into this component as prop
+            function mapStateToProps(state) {
+              return {todos: state.todos};
+            }
+
+            // Inject action creators as prop
+            function mapDispatchToProps(dispatch) {
+              return {
+                addTodo(newTodo) {
+                  dispatch({type: 'ADD_TODO', payload: newTodo});
+                }
+              }
+            }
+
+            connect(mapStateToProps, mapDispatchToProps)(TodoList);
+        section
+          h4 Why? – Testability
+          h5 Testing components
+
+          p Encourages presentational, <strong>stateless components</strong>
+          p Components are simple input – output functions
+
+          ul
+            li No need to worry about where your data is coming from, how to get it.
+            li Everything is synchronous
+            li Use spy functions as action handlers
+
+          aside.notes.
+            Not necessarily stateless functional
+
+        section
+          h4 Why? – Testability
+          h5 Testing components
+
+          +code.
+            // Using enzyme, chai, and sinon
+
+            const props = {
+              todos: ['One todo', 'Two todos'];
+              addTodo: sinon.spy
+            };
+            wrapper = enzyme.shallow(<TodoList {...props} />);
+
+            expect(wrapper).to.contain(<li>One todo</li>);
+            expect(wrapper).to.contain(<li>Two todos</li>);
+
+            wrapper.find('button').simulate('click');
+            expect(props.addTodo.calledOnce).to.eql(true);
+
+         section
+          h4 Why? – Testability
+          h5 Testing actions and reducers
+
+          ul
+            li Reducers are just functions!
+            li Actions are just objects!
+            li Testing them is trivially delightful
+
+          +code.
+            const actualInitialState = todosReducer(undefined, {});
+            expect(actualInitialState).to.eql([]);
+
+            const action = {type: 'ADD_TODO', payload: 'New todo'};
+            expect(todosReducer([], action)).to.eql(['New todo'])
+
+        section
+          h4 Why? – Performance
+
+          ul
+            li
+              span State transformations are immutable
+            li
+              span Works great with &nbsp;
+              a(href="https://github.com/substantial/updeep" target="_blank") updeep
+              span , &nbsp;
+              a(href="https://facebook.github.io/immutable-js/" target="_blank") Immutable.JS
+              span , etc
+            li
+              <code>connect</code> is smart
+              ul
+                li Will not rerender if connected state hasn't shallowly changed
+                li
+                  span <code>shouldComponentUpdate</code> is a thing of the past
+                  br
+            +code.
+              const ListItem = ({todo}) => <li>{todo}</li>;
+
+              function mapStateToProps(state, ownProps) {
+                return {
+                     // ↓ shallowCompare this
+                  todo: state.todos[ownProps.index];
+                }
+              }
+
+              connect(mapStateToProps)(ListItem);
+        section
+          h4 Why? – Performance
+          h5 Tips
+
+          ul
+            li What data do you inject? (<a href="https://github.com/reactjs/reselect" target="_blank">reselect</a> can help)
+            li Favor many small connected components
+            li Separate data concerns
+
+          +notes
+            li Think carefuly, what data do you inject ? Tendency to inject too much
+            li over one big root component that passes down datal
+            li into different reducers
+
+
+        section
+          h4 Why? – Developer experience
+
+          ul
+            li Hot reloading
+            li Time travel – Not so useful in practice
+            li Devtools
+
+        section
+          h4 Developer experience
+          h5 Devtools
+
+          .row
+            .column
+              ul
+                li Actions log
+                li Inspect state changes
+                li Export / import state
+
+            .column
+              img(src="img/redux-devtools.png" width="130%")
+
+        section
+          h4 Why? – Simplicity
+
+          ul
+            li Pure functions, not custom classes
+            li Simple logic
+            li Library code is very readable
+            li
+              span Easy to extend
+              ul
+                li Adding middlewares to enforce conventions
+                li Store enhancers for performance
+            li
+              strong Bring your own conventions
+
+            +notes
+              li Ease of debugging
+              li You are in control, decide how you want to do this
+
+        section
+          h4 What's not so good about it?
+
+          h5 Trade-offs
+
+          ul
+            li Simple, but lots of boilerplate
+            li Simple, but conventions are your responsibility!
+            li Investment
+
+          +notes.
+            li Setting up and enforcing conventions
+            li Investment –> maybe not the best for prototypes and small scale apps
+
+        section
+          h4 So, should I use it?
+
+          ul
+            li If you like having a thorough understanding of how the data flows into your app, yes!
+            li If you have a large application, with lots of cross-component state, definitely
+
+          br
+          h4 But...
+          ul
+            li Make sure you master React first!
+            li And remember that component state (using <code>setState</code>) is still useful
+            li Check out <a href="http://mobxjs.github.io/mobx/" target="_blank">MobX</a> as well
+
+        section
+          h4 Thanks for listening!
+          h5 Any questions?
+
+
+
+
+
+    script(src="js/head.min.js")
+    script(src="js/reveal.js")
+    script(src="app.js")
+    script.
+      require('app').default.init()
