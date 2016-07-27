@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><title>Redux – Why and when?</title><meta charset="utf-8"><meta name="description" content="Redux – Why and when? @ Algolia"><meta name="author" content="Alexandre Meunier"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="stylesheet" type="text/css" href="main.css"><link rel="shortcut icon" href="./favicon.ico"></head><body><a target="_blank" href="#" class="demo-link"></a><div class="reveal"><div class="slides"><section><section><h1 style="text-align: left; margin-bottom: 0.5em">Redux</h1><h4>Why and when?</h4><br><p style="text-align: left; vertical-align: middle;"><img src="https://en.gravatar.com/userimage/42384389/8cc589eb1e04703fef15259ec63099a9.jpeg" style="vertical-align: middle; border-radius: 50%; width: 2em; margin-right: 1em; margin-top: -0.2em"><span>Alexandre Meunier (alexandre.meunier@algolia.com)</span></p></section></section><section><h4 style="margin-bottom: 1em;"><span>Hello, I'm Alex</span><img src="https://en.gravatar.com/userimage/42384389/8cc589eb1e04703fef15259ec63099a9.jpeg" style="vertical-align: middle; border-radius: 50%; width: 1em; margin-left: 0.5em; margin-top: -0.2em"></h4><h5><span>I'm a software engineer at</span><img src="img/algolia.png" style="vertical-align: middle; height: 1.5em; margin-left: 0.5em; margin-top: -0.2em"></h5><h5><span>I work on the <a href="https://algolia.com" target="_blank">algolia.com</a> website, mostly using Ruby and Javascript</span></h5><h5><span>I am on twitter: <a href="https://twitter.com/dephadepha" target="_blank">@dephadepha</a></span></h5><sectionx><h4>What's Flux?</h4><br><blockquote cite="https://facebook.github.io/flux/docs/overview.html#content" class="has-highlight"><p>Flux is the <strong>application architecture</strong> that Facebook uses for building client-side web applications.
+</p><p>It complements React's composable view components by utilizing a <strong>unidirectional data flow</strong>. It's more of a pattern rather than a formal framework [...]</p></blockquote></sectionx><sectionx><h4>What's Flux</h4><h5>Remember MV*?</h5><img src="http://fluxxor.com/images/mvc-complex.png"><cite>http://fluxxor.com/what-is-flux.html</cite><aside class="notes"><ul><li>Angular?</li><li>Who is updating which model?</li></ul></aside></sectionx><sectionx><h4>What's Flux</h4><h5>Remember MV*?</h5><img src="img/mvc-complex.jpeg"><cite>https://medium.com/brigade-engineering/what-is-the-flux-application-architecture-b57ebca85b9e#.f96m63cxl</cite></sectionx><sectionx><h4>What's Flux</h4><h5>Look how simple Flux is</h5><br><img src="img/flux-simple-f8-diagram-with-client-action-1300w.png"><cite>https://facebook.github.io/flux/docs/overview.html#content</cite><aside class="notes"><ul><li>One way data flow</li></ul></aside></sectionx><sectionx><h4>What is Flux?</h4><h5>Real life Flux</h5><br><img src="img/flux-complex.jpeg"></sectionx><sectionx><h4>What is Flux?</h4><h5>Key features</h5><ul><li><strong>Predictability, Predictability, Predictability</strong></li><li>Always synchronous – one action at a time</li><li>Clear (inverted) control/ownership</li><li>Separation of concerns</li></ul><aside class="notes"><ul><li>No race conditions</li><li>No one knows how to update the stores except the stores</li></ul></aside></sectionx></section><section><h4>What is Redux?</h4><blockquote cite="https://github.com/reactjs/redux">Redux is a predictable state container for JavaScript apps.
+</blockquote><aside class="notes"><ul><li>You data lives outside your app</li><li>Nothing to do with React</li></ul></aside></section><section><h4>What is Redux?</h4><ul><li><strong>Evolved from Flux</strong>, influenced by Elm</li><li>Created in 2015 by <strong><a href="https://twitter.com/dan_abramov" target="blank">@dan_abramov</a></strong> ...</li><li>... to demonstrate <strong>hot reloading with time travel</strong> at <a href="https://www.youtube.com/watch?v=xsSnOQynTHs" target="_blank">React Europe</a></li><br><br><img src="img/redux.svg" style="width: 90%"></ul><aside class="notes"><ul><li>De facto way to manage state in React – a bit too much</li><li>Great ecosystem</li><li>Immmutable</li><li>Single source of truth</li></ul></aside></section><section><h4>What does it look like?</h4><h5>Reducers</h5><pre><code class="javascript">function todosReducer(state = [], action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return state.concat(action.payload);
+    default:
+      return state;
+  }
+}
+
+state.todos // =&gt; []
+
+dispatch({
+  type: 'ADD_TODO',
+  payload: 'Buy milk'
+});
+
+state.todos // =&gt; ['Buy milk']
+</code></pre><aside class="notes"><ul><li>Takes action and immutably transform state</li><li>Maps to key on the app State</li></ul></aside></section><section><h4>What does it look like?</h4><h5>Dumb components</h5><pre><code class="javascript">export function TodoList({todos, addTodo}) {
+  return (
+    &lt;div&gt;
+      &lt;ul&gt;
+        {todos.map(todo =&gt; (
+          &lt;li&gt;{todo}&lt;/li&gt;
+        ))}
+        &lt;li&gt;
+          &lt;input type=&quot;text&quot; ref=&quot;input&quot;&gt;
+          &lt;button onClick={evt =&gt; addTodo(evt.target.value)}&gt;
+            Add
+          &lt;/button&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre><aside class="notes"><ul><li>Goal: as dumb as possible</li><li>Completely decorrelated from business logic</li></ul></aside></section><section><h4>What does it look like?</h4><h5>Smart containers</h5><pre><code class="javascript">import {connect} from 'react-redux';
+
+// Inject a subset of the state into this component as prop
+function mapStateToProps(state) {
+  return {todos: state.todos};
+}
+
+// Inject action creators as prop
+function mapDispatchToProps(dispatch) {
+  return {
+    addTodo(newTodo) {
+      dispatch({type: 'ADD_TODO', payload: newTodo});
+    }
+  }
+}
+
+connect(mapStateToProps, mapDispatchToProps)(TodoList);</code></pre></section><section><h4>Why? – Testability</h4><h5>Testing components</h5><p>Encourages presentational, <strong>stateless components</strong></p><p>Components are simple input – output functions</p><ul><li>No need to worry about where your data is coming from, how to get it.</li><li>Everything is synchronous</li><li>Use spy functions as action handlers</li></ul><aside class="notes">Not necessarily stateless functional
+</aside></section><section><h4>Why? – Testability</h4><h5>Testing components</h5><pre><code class="javascript">// Using enzyme, chai, and sinon
+
+const props = {
+  todos: ['One todo', 'Two todos'];
+  addTodo: sinon.spy
+};
+wrapper = enzyme.shallow(&lt;TodoList {...props} /&gt;);
+
+expect(wrapper).to.contain(&lt;li&gt;One todo&lt;/li&gt;);
+expect(wrapper).to.contain(&lt;li&gt;Two todos&lt;/li&gt;);
+
+wrapper.find('button').simulate('click');
+expect(props.addTodo.calledOnce).to.eql(true);
+</code></pre></section><section><h4>Why? – Testability</h4><h5>Testing actions and reducers</h5><ul><li>Reducers are just functions!</li><li>Actions are just objects!</li><li>Testing them is trivially delightful</li></ul><pre><code class="javascript">const actualInitialState = todosReducer(undefined, {});
+expect(actualInitialState).to.eql([]);
+
+const action = {type: 'ADD_TODO', payload: 'New todo'};
+expect(todosReducer([], action)).to.eql(['New todo'])
+</code></pre></section><section><h4>Why? – Performance</h4><ul><li><span>State transformations are immutable</span></li><li><span>Works great with &nbsp;</span><a href="https://github.com/substantial/updeep" target="_blank">updeep</a><span>, &nbsp;</span><a href="https://facebook.github.io/immutable-js/" target="_blank">Immutable.JS</a><span>, etc</span></li><li><code>connect</code> is smart<ul><li>Will not rerender if connected state hasn't shallowly changed</li><li><span><code>shouldComponentUpdate</code> is a thing of the past</span><br></li></ul></li><pre><code class="javascript">const ListItem = ({todo}) =&gt; &lt;li&gt;{todo}&lt;/li&gt;;
+
+function mapStateToProps(state, ownProps) {
+  return {
+       // ↓ shallowCompare this
+    todo: state.todos[ownProps.index];
+  }
+}
+
+connect(mapStateToProps)(ListItem);</code></pre></ul></section><section><h4>Why? – Performance</h4><h5>Tips</h5><ul><li>What data do you inject? (<a href="https://github.com/reactjs/reselect" target="_blank">reselect</a> can help)</li><li>Favor many small connected components</li><li>Separate data concerns</li></ul><aside class="notes"><ul><li>Think carefuly, what data do you inject ? Tendency to inject too much</li><li>over one big root component that passes down datal</li><li>into different reducers</li></ul></aside></section><section><h4>Why? – Developer experience</h4><ul><li>Hot reloading</li><li>Time travel – Not so useful in practice</li><li>Devtools</li></ul></section><section><h4>Developer experience</h4><h5>Devtools</h5><div class="row"><div class="column"><ul><li>Actions log</li><li>Inspect state changes</li><li>Export / import state</li></ul></div><div class="column"><img src="img/redux-devtools.png" width="130%"></div></div></section><section><h4>Why? – Simplicity</h4><ul><li>Pure functions, not custom classes</li><li>Simple logic</li><li>Library code is very readable</li><li><span>Easy to extend</span><ul><li>Adding middlewares to enforce conventions</li><li>Store enhancers for performance</li></ul></li><li><strong>Bring your own conventions</strong></li><aside class="notes"><ul><li>Ease of debugging</li><li>You are in control, decide how you want to do this</li></ul></aside></ul></section><section><h4>What's not so good about it?</h4><h5>Trade-offs</h5><ul><li>Simple, but lots of boilerplate</li><li>Simple, but conventions are your responsibility!</li><li>Investment</li></ul><aside class="notes"><ul>li Setting up and enforcing conventions
+li Investment –> maybe not the best for prototypes and small scale apps
+</ul></aside></section><section><h4>So, should I use it?</h4><ul><li>If you like having a thorough understanding of how the data flows into your app, yes!</li><li>If you have a large application, with lots of cross-component state, definitely</li></ul><br><h4>But...</h4><ul><li>Make sure you master React first!</li><li>And remember that component state (using <code>setState</code>) is still useful</li><li>Check out <a href="http://mobxjs.github.io/mobx/" target="_blank">MobX</a> as well</li></ul></section><section><h4>Thanks for listening!</h4><h5>Any questions?</h5></section></div></div><script src="js/head.min.js"></script><script src="js/reveal.js"></script><script src="app.js"></script><script>require('app').default.init()</script></body></html>
