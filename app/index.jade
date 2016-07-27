@@ -139,14 +139,17 @@ html
             li <strong>Evolved from Flux</strong>, influenced by Elm
             li Created in 2015 by <strong><a href="https://twitter.com/dan_abramov" target="blank">@dan_abramov</a></strong> ...
             li ... to demonstrate <strong>hot reloading with time travel</strong> at <a href="https://www.youtube.com/watch?v=xsSnOQynTHs" target="_blank">React Europe</a>
-            br
-            br
-            img(src="img/redux.svg" style="width: 90%")
 
           +notes
             li De facto way to manage state in React – a bit too much
             li Great ecosystem
             li Immmutable
+
+        section
+          h4 What is Redux?
+          br
+          img(src="img/redux.svg" style="width: 90%")
+          +notes
             li Single source of truth
 
         section
@@ -234,12 +237,12 @@ html
           p Components are simple input – output functions
 
           ul
-            li No need to worry about where your data is coming from, how to get it.
+            li Don't worry about the data
             li Everything is synchronous
             li Use spy functions as action handlers
 
-          aside.notes.
-            Not necessarily stateless functional
+          +notes
+            li Not necessarily stateless functional
 
         section
           h4 Why? – Testability
@@ -372,7 +375,7 @@ html
             li Simple, but conventions are your responsibility!
             li Investment
 
-          +notes.
+          +notes
             li Setting up and enforcing conventions
             li Investment –> maybe not the best for prototypes and small scale apps
 

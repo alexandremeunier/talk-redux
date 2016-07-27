@@ -1,7 +1,7 @@
 {
   "name": "talk-redux",
   "version": "0.0.1",
-  "description": Redux – Why and when?,
+  "description": "Redux – Why and when?",
   "author": "Alexandre Meunier",
   "private": true,
   "repository": {
